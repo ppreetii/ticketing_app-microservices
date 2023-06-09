@@ -6,3 +6,7 @@ Instructions:
 ```
     kubectl create secret generic jwt-secret --from-literal=JWT_KEY=<secret-key-string>
 ```
+2. Run test Cases:
+```
+    npm run test
+```
