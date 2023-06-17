@@ -18,11 +18,12 @@ it('return 200 with ticket information if ticket exists', async ()=>{
          price,
        })
        .expect(201);
-    
+
     const response = await request(app)
       .get(`/api/tickets/${res.body.id}`)
       .send()
       .expect(200);
+
     expect(response.body.title).toEqual(title);
     expect(response.body.price).toEqual(price);
 });
