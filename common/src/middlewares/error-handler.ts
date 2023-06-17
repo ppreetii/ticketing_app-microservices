@@ -13,7 +13,7 @@ export const errorHandler = (
       errors: err.serializeErrors(),
     });
   }
-
+  console.error(err);
   res.status(400).send({
     errors: [
       {
