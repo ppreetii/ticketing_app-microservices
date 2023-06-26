@@ -27,7 +27,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     status: {
-      type: Number,
+      type: String,
       required: true,
       enum : Object.values(OrderStatus),
       default: OrderStatus.Created
