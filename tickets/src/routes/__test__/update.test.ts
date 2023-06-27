@@ -25,6 +25,16 @@ it("Returns 401 if user is not authenticated", async () => {
        })
        .expect(401);
 });
+it("Validation Error for Invalid TicketId", async () => {
+   await request(app)
+     .put(`/api/tickets/1234`)
+     .set("Cookie", global.signin())
+     .send({
+       title: "test",
+       price: 10,
+     })
+     .expect(400);
+});
 it("Returns 401 if user doesnot own the ticket", async () => {
   //create ticket
   const title = "test",

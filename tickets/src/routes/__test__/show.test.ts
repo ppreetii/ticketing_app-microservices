@@ -8,6 +8,14 @@ it('return 404 if ticket not found', async ()=>{
     await request(app).get(`/api/tickets/${id}`).send().expect(404);
 });
 
+it("Validation Error for Invalid TicketId", async () => {
+  await request(app)
+    .get(`/api/tickets/1234`)
+    .set("Cookie", global.signin())
+    .send()
+    .expect(400);
+});
+
 it('return 200 with ticket information if ticket exists', async ()=>{
     const title = 'test', price = 10;
     const res =  await request(app)

@@ -18,7 +18,7 @@ it("API can only be accessed if user is signed in", async () => {
   await request(app).get("/api/orders").send().expect(401);
 });
 
-it("Fethes all orders of particular user", async () => {
+it("Fetches all orders of particular user", async () => {
   //create 3 tickets
   const ticket1 = await buildTicket();
   const ticket2 = await buildTicket();
