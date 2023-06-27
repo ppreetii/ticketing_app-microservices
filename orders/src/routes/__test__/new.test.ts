@@ -72,3 +72,5 @@ it("Order is created successfully", async () => {
     .send({ ticketId: ticket.id })
     .expect(201);
 });
+
+it.todo("Publish events on order creation");

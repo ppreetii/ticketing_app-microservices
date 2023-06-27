@@ -29,14 +29,15 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum : Object.values(OrderStatus),
-      default: OrderStatus.Created
+      enum: Object.values(OrderStatus),
+      default: OrderStatus.Created,
     },
     expiresAt: {
       type: mongoose.Schema.Types.Date,
     },
     ticket: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "Ticket",
     },
   },
   {
