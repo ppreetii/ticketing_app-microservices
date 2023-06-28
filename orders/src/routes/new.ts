@@ -5,6 +5,8 @@ import { requireAuth, validateRequest, NotFoundError, BadRequestError, OrderStat
 
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
+import { natsWrapper } from "../nats-wrapper";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 
 const EXPIRATION_SEC = 2 * 60;
 
@@ -43,7 +45,19 @@ router.post(
       ticket
     });
     await order.save();
-    //TODO: Work on Publish events
+    
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      status: order.status,
+      userId: order.userId,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: ticket.id,
+        price: ticket.price
+      }
+
+    });
+    
     res.status(201).send(order);
   }
 );

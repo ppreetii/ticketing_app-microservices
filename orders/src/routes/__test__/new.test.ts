@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { app } from "../../app";
 import { Order, OrderStatus } from "../../models/order";
 import { Ticket } from "../../models/ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("API can only be accessed if user is signed in", async () => {
   const ticketId = new mongoose.Types.ObjectId();
@@ -73,4 +74,18 @@ it("Order is created successfully", async () => {
     .expect(201);
 });
 
-it.todo("Publish events on order creation");
+it("Publish event on order creation", async ()=>{
+  const ticket = Ticket.build({
+    title: "test ticket",
+    price: 120,
+  });
+  await ticket.save();
+
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", global.signin())
+    .send({ ticketId: ticket.id })
+    .expect(201);
+  
+    expect(natsWrapper.client.publish).toHaveBeenCalled(); 
+});
