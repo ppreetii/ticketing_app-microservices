@@ -12,6 +12,7 @@ export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
   userId: string;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 
