@@ -21,6 +21,7 @@ it("Validation Error for Invalid OrderId", async () => {
 it("Get Order By Id for signed-in user", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "test",
     price: 123,
   });
@@ -47,6 +48,7 @@ it("Get Order By Id for signed-in user", async () => {
 it("Fails when one use tries to fetch order of another user", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "test",
     price: 123,
   });

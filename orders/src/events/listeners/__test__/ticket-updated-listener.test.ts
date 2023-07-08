@@ -17,8 +17,8 @@ const setup = async () => {
 
   await ticket.save();
   const data: TicketUpdatedEvent["data"] = {
-    version: 0,
-    id: new mongoose.Types.ObjectId().toHexString(),
+    version: ticket.version + 1,
+    id: ticket.id,
     title: "test ticket 2",
     price: 100,
     userId: new mongoose.Types.ObjectId().toHexString(),

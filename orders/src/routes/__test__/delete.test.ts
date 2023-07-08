@@ -22,6 +22,7 @@ it("Validation Error for Invalid OrderId", async () => {
 it("Marks Order as Cancelled for signed-in user", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "test",
     price: 123,
   });
@@ -50,6 +51,7 @@ it("Marks Order as Cancelled for signed-in user", async () => {
 it("Fails when one use tries to cancel order of another user", async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "test",
     price: 123,
   });
@@ -72,6 +74,7 @@ it("Fails when one use tries to cancel order of another user", async () => {
 
 it("Emits event on order cancellation", async ()=>{
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "test",
     price: 123,
   });
