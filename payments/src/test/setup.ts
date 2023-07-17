@@ -17,6 +17,8 @@ beforeAll(async () => {
 
 jest.mock("../nats-wrapper");
 
+process.env.STRIPE_KEY = "sk_test_51MbRrkSAottuyGvfL89lCRBzTBPGtNJRHWkilqJJYHrZXPHO8amqjc6Dtthp5X7BHOYhCbrWjpFJFeMS4184mQ8P009OcJDp64";
+
 beforeEach(async () => {
   jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();

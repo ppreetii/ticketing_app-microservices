@@ -4,6 +4,7 @@ import { OrderStatus } from "@preeti097/common";
 
 import {app} from "../../app";
 import { Order } from "../../models/order";
+import { stripe } from "../../stripe";
 
 const url = '/api/payments';
 
@@ -49,4 +50,30 @@ it("Return 400 when purchasing a cancelled order", async ()=>{
        })
        .expect(400);
 
+})
+
+it("Returns 201 with valid inputs", async ()=>{
+  const price = Math.floor(Math.random() * 100000);
+  const order = Order.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    price,
+    version: 0,
+    status: OrderStatus.Created,
+    userId: new mongoose.Types.ObjectId().toHexString(),
+  });
+  await order.save();
+
+   await request(app)
+     .post(url)
+     .set("Cookie", global.signin(order.userId))
+     .send({
+       token: "tok_visa",
+       orderId: order.id,
+     })
+     .expect(201);
+
+     const stripeCharges = await stripe.charges.list({limit: 50});
+     const stripeCharge = stripeCharges.data.find(charge => charge.amount === price*100);
+     expect(stripeCharge).toBeDefined();
+     expect(stripeCharge!.currency).toEqual('usd');
 })
