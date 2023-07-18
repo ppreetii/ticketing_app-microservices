@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
-import { ExpirationCompleteEvent, OrderStatus } from "@preeti097/common";
+import { PaymentCreatedEvent, OrderStatus } from "@preeti097/common";
 import { Message } from "node-nats-streaming";
 
 import { Ticket } from "../../../models/ticket";
 import { Order } from "../../../models/order";
-import { ExpirationCompleteListener } from "../expiration-complete-listener";
+import { PaymentCreatedListener } from "../payment-created-listener"; 
 import { natsWrapper } from "../../../nats-wrapper";
 
 const setup = async () => {
-  const listener = new ExpirationCompleteListener(natsWrapper.client);
+  const listener = new PaymentCreatedListener(natsWrapper.client);
 
   //create a ticket
   const ticket = Ticket.build({
@@ -28,8 +28,10 @@ const setup = async () => {
   await order.save();
 
   //create event data for expirayin:complete event for above order
-  const data: ExpirationCompleteEvent["data"] = {
+  const data: PaymentCreatedEvent["data"] = {
+    id: new mongoose.Types.ObjectId().toHexString(),
     orderId: order.id,
+    stripeId: "fdcgavszdhscfkj"
   };
 
   //@ts-ignore
@@ -40,24 +42,13 @@ const setup = async () => {
   return { listener, data, msg, order, ticket };
 };
 
-it("Updates Order Status to cancelled when expiration:complete event is listened", async () => {
+it("Updates Order Status to complete when payment:created event is listened", async () => {
   const { listener, data, msg, order } = await setup();
 
   await listener.onMessage(data, msg);
 
   const updatedOrder = await Order.findById(order.id);
-  expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
-});
-
-it("Emits OrderCancelled Event upon receiving ExpirationComplete event", async () => {
-  const { listener, data, msg, order } = await setup();
-
-  await listener.onMessage(data, msg);
-
-  const eventData = JSON.parse(
-    (natsWrapper.client.publish as jest.Mock).mock.calls[0][1]
-  );
-  expect(eventData.id).toEqual(order.id);
+  expect(updatedOrder!.status).toEqual(OrderStatus.Complete);
 });
 
 it("acks the message", async () => {
@@ -66,15 +57,4 @@ it("acks the message", async () => {
   await listener.onMessage(data, msg);
 
   expect(msg.ack).toHaveBeenCalled();
-});
-
-it("acks the message immediately if order is already complete", async () => {
-  const { listener, data, msg, order } = await setup();
-  order.status = OrderStatus.Complete;
-  await order.save();
-
-  await listener.onMessage(data, msg);
-
-  expect(msg.ack).toHaveBeenCalled();
-  expect(natsWrapper.client.publish).not.toHaveBeenCalled();
 });
