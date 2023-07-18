@@ -17,7 +17,7 @@ beforeAll(async () => {
 
 jest.mock("../nats-wrapper");
 
-process.env.STRIPE_KEY = "sk_test_51MbRrkSAottuyGvfL89lCRBzTBPGtNJRHWkilqJJYHrZXPHO8amqjc6Dtthp5X7BHOYhCbrWjpFJFeMS4184mQ8P009OcJDp64";
+process.env.STRIPE_KEY = "sk_test_51NUzjUHWLWzp1DjSYf0EJJzBwJvKFTaFmZ2K4OY2sPoWbxBHpJiBPgJ3oAIt99GlprPllWWVsjwhXSMVWwLQFfZn00mai6iV7Q";
 
 beforeEach(async () => {
   jest.clearAllMocks();
