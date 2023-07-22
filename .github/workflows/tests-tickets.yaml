@@ -1,0 +1,15 @@
+name: test-tickets
+
+on:
+  pull_request:
+    paths:
+      - "tickets/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run Tickets Module Test Suite
+        run: cd tickets && npm install && npm run test:ci

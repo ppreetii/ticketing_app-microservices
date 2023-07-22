@@ -19,5 +19,5 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command
-      - name: Run a test script
+      - name: Run Auth Module Test Suite
         run: cd auth && npm install && npm run test:ci
