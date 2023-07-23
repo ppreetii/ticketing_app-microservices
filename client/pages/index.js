@@ -37,4 +37,4 @@ LandingPage.getInitialProps = async (context, client, currentUser) => {
   return { tickets: data };
 };
 
-export default LandingPage;
+export default LandingPage; 
