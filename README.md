@@ -37,7 +37,6 @@ It is a microservice-based NodeJS Web App, where a user can create account, and 
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
 ```
-yaml
 3. Check if secrets are added.If you donot see the secrets , reapply them using above command:
 ```
 kubectl get secrets
